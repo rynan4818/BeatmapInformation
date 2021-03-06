@@ -1,4 +1,5 @@
 ﻿using SongOfPiInformation.Configuration;
+using SongOfPiInformation.Models;
 using BeatSaberMarkupLanguage;
 using BeatSaberMarkupLanguage.Attributes;
 using BeatSaberMarkupLanguage.Components;
@@ -17,6 +18,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using VRUIControls;
 using Zenject;
+using System.Collections.Concurrent;
 
 namespace SongOfPiInformation.Views
 {
@@ -28,324 +30,136 @@ namespace SongOfPiInformation.Views
         // For this method of setting the ResourceName, this class must be the first class in the file.
         //public string ResourceName => string.Join(".", GetType().Namespace, GetType().Name);
 
-        /// <summary>カバー画像の表示 を取得、設定</summary>
-        private bool coverVisible_;
-        [UIValue("cover-visible")]
-        /// <summary>カバー画像の表示 を取得、設定</summary>
-        public bool CoverVisible
-        {
-            get => this.coverVisible_;
+        /// <summary>πの現在数字スペースの高さ を取得、設定</summary>
+        private float suujiTextSpaceHeight_;
+        [UIValue("suuji-text-height")]
+        /// <summary>πの現在数字スペースの高さ を取得、設定</summary>
+        public float suujiTextSpaceHeight {
+            get => this.suujiTextSpaceHeight_;
 
-            set => this.SetProperty(ref this.coverVisible_, value);
+            set => this.SetProperty(ref this.suujiTextSpaceHeight_, value);
         }
 
-        /// <summary>カバー画像のサイズ を取得、設定</summary>
-        private float coverSize_;
-        [UIValue("cover-size")]
-        /// <summary>カバー画像のサイズ を取得、設定</summary>
-        public float CoverSize
-        {
-            get => this.coverSize_;
+        /// <summary>πの現在数字スペースの幅 を取得、設定</summary>
+        private float suujiTextSpaceWidth_;
+        [UIValue("suuji-text-witdh")]
+        /// <summary>πの現在数字スペースの幅 を取得、設定</summary>
+        public float suujiTextSpaceWidth {
+            get => this.suujiTextSpaceWidth_;
 
-            set => this.SetProperty(ref this.coverSize_, value);
+            set => this.SetProperty(ref this.suujiTextSpaceWidth_, value);
         }
 
-        /// <summary>カバー画像のピボット を取得、設定</summary>
-        private float coverPivot_;
-        [UIValue("cover-pivot")]
-        /// <summary>カバー画像のピボット を取得、設定</summary>
-        public float CoverPivot
-        {
-            get => this.coverPivot_;
+        /// <summary>πの桁表示スペースの高さ を取得、設定</summary>
+        private float ketaTextSpaceHeight_;
+        [UIValue("keta-text-height")]
+        /// <summary>πの桁表示スペースの高さ を取得、設定</summary>
+        public float ketaTextSpaceHeight {
+            get => this.ketaTextSpaceHeight_;
 
-            set => this.SetProperty(ref this.coverPivot_, value);
+            set => this.SetProperty(ref this.ketaTextSpaceHeight_, value);
         }
 
-        /// <summary>テキストスペースの高さ を取得、設定</summary>
-        private float textSpaceHeight_;
-        [UIValue("text-height")]
-        /// <summary>テキストスペースの高さ を取得、設定</summary>
-        public float TextSpaceHeight
-        {
-            get => this.textSpaceHeight_;
+        /// <summary>πの桁表示スペースの幅 を取得、設定</summary>
+        private float ketaTextSpaceWidth_;
+        [UIValue("keta-text-witdh")]
+        /// <summary>πの桁表示スペースの幅 を取得、設定</summary>
+        public float ketaTextSpaceWidth {
+            get => this.ketaTextSpaceWidth_;
 
-            set => this.SetProperty(ref this.textSpaceHeight_, value);
+            set => this.SetProperty(ref this.ketaTextSpaceWidth_, value);
         }
 
-        /// <summary>テキストスペースの幅 を取得、設定</summary>
-        private float textSpaceWidth_;
-        [UIValue("text-witdh")]
-        /// <summary>テキストスペースの幅 を取得、設定</summary>
-        public float TextSpaceWidth
-        {
-            get => this.textSpaceWidth_;
+        /// <summary>πの現在の桁のフォントサイズ を取得、設定</summary>
+        private int piImaFontSize_;
+        [UIValue("pi-ima-fontsize")]
+        /// <summary>πの現在の桁のフォントサイズ を取得、設定</summary>
+        public int piImaFontSize {
+            get => this.piImaFontSize_;
 
-            set => this.SetProperty(ref this.textSpaceWidth_, value);
+            set => this.SetProperty(ref this.piImaFontSize_, value);
         }
 
-        /// <summary>曲のタイトル を取得、設定</summary>
-        private string songName_;
-        [UIValue("song-name")]
-        /// <summary>曲のタイトル を取得、設定</summary>
-        public string SongName
-        {
-            get => this.songName_ ?? "SongName";
+        /// <summary>πの残りの桁のフォントサイズ を取得、設定</summary>
+        private int piNokoriFontSize_;
+        [UIValue("pi-nokori-fontsize")]
+        /// <summary>πの残りの桁のフォントサイズ を取得、設定</summary>
+        public int piNokoriFontSize {
+            get => this.piNokoriFontSize_;
 
-            set => this.SetProperty(ref this.songName_, value);
+            set => this.SetProperty(ref this.piNokoriFontSize_, value);
         }
 
-        /// <summary>曲名のフォントサイズ を取得、設定</summary>
-        private int songNameFontSize_;
-        [UIValue("song-name-fontsize")]
-        /// <summary>曲名のフォントサイズ を取得、設定</summary>
-        public int SongNameFontSize
-        {
-            get => this.songNameFontSize_;
+        /// <summary>πの現在数字前後のフォントサイズ を取得、設定</summary>
+        private int piSuujiZengoFontSize_;
+        [UIValue("pi-suuji-zengo-fontsize")]
+        /// <summary>πの現在数字前後のフォントサイズ を取得、設定</summary>
+        public int piSuujiZengoFontSize {
+            get => this.piSuujiZengoFontSize_;
 
-            set => this.SetProperty(ref this.songNameFontSize_, value);
+            set => this.SetProperty(ref this.piSuujiZengoFontSize_, value);
         }
 
-        /// <summary>曲のサブタイトル を取得、設定</summary>
-        private string songSubName_;
-        [UIValue("song-sub-name")]
-        /// <summary>曲のサブタイトル を取得、設定</summary>
-        public string SongSubName
-        {
-            get => this.songSubName_ ?? "";
+        /// <summary>πの現在数字のフォントサイズ を取得、設定</summary>
+        private int piSuujiImaFontSize_;
+        [UIValue("pi-suuji-ima-fontsize")]
+        /// <summary>πの現在数字のフォントサイズ を取得、設定</summary>
+        public int piSuujiImaFontSize {
+            get => this.piSuujiImaFontSize_;
 
-            set => this.SetProperty(ref this.songSubName_, value);
+            set => this.SetProperty(ref this.piSuujiImaFontSize_, value);
         }
 
-        /// <summary>サブタイトルフォントサイズ を取得、設定</summary>
-        private int songSubNameFontSize_;
-        [UIValue("song-sub-name-fontsize")]
-        /// <summary>サブタイトルフォントサイズ を取得、設定</summary>
-        public int SongSUbNameFontSIze
-        {
-            get => this.songSubNameFontSize_;
+        /// <summary>πの現在の桁を取得、設定</summary>
+        private string piIma_;
+        [UIValue("pi-ima")]
+        /// <summary>πの現在の桁を取得、設定</summary>
+        public string piIma {
+            get => this.piIma_ ?? "";
 
-            set => this.SetProperty(ref this.songSubNameFontSize_, value);
+            set => this.SetProperty(ref this.piIma_, value);
         }
 
-        /// <summary>曲作者 を取得、設定</summary>
-        private string songAuthor_;
-        [UIValue("song-author")]
-        /// <summary>曲作者 を取得、設定</summary>
-        public string SongAuthor
-        {
-            get => this.songAuthor_ ?? "";
+        /// <summary>πの残りの桁を取得、設定</summary>
+        private string piNokori_;
+        [UIValue("pi-nokori")]
+        /// <summary>πの残りの桁を取得、設定</summary>
+        public string piNokori {
+            get => this.piNokori_ ?? "";
 
-            set => this.SetProperty(ref this.songAuthor_, value);
+            set => this.SetProperty(ref this.piNokori_, value);
         }
 
-        /// <summary>曲作者フォントサイズ を取得、設定</summary>
-        private int songAuthorFontsize_;
-        [UIValue("song-author-fontsize")]
-        /// <summary>曲作者フォントサイズ を取得、設定</summary>
-        public int SongAuthorFontsize
-        {
-            get => this.songAuthorFontsize_;
+        /// <summary>πの現在数字前方を取得、設定</summary>
+        private string piSuujiMae_;
+        [UIValue("pi-suuji-mae")]
+        /// <summary>πの現在数字前方を取得、設定</summary>
+        public string piSuujiMae {
+            get => this.piSuujiMae_ ?? "";
 
-            set => this.SetProperty(ref this.songAuthorFontsize_, value);
+            set => this.SetProperty(ref this.piSuujiMae_, value);
         }
 
-        /// <summary>難易度の表示 を取得、設定</summary>
-        private bool difficulityLabelVisible_;
-        [UIValue("difficulity-label-visible")]
-        /// <summary>難易度の表示 を取得、設定</summary>
-        public bool DifficulityLabelVisible
-        {
-            get => this.difficulityLabelVisible_;
+        /// <summary>πの現在数字を取得、設定</summary>
+        private string piSuujiIma_;
+        [UIValue("pi-suuji-ima")]
+        /// <summary>πの現在数字を取得、設定</summary>
+        public string piSuujiIma {
+            get => this.piSuujiIma_ ?? "";
 
-            set => this.SetProperty(ref this.difficulityLabelVisible_, value);
+            set => this.SetProperty(ref this.piSuujiIma_, value);
         }
 
-        /// <summary>難易度 を取得、設定</summary>
-        private string difficulity_;
-        [UIValue("difficulity")]
-        /// <summary>難易度 を取得、設定</summary>
-        public string Difficulity
-        {
-            get => this.difficulity_;
+        /// <summary>πの現在数字後方を取得、設定</summary>
+        private string piSuujiUshiro_;
+        [UIValue("pi-suuji-ushiro")]
+        /// <summary>πの現在数字後方を取得、設定</summary>
+        public string piSuujiUshiro {
+            get => this.piSuujiUshiro_ ?? "";
 
-            set => this.SetProperty(ref this.difficulity_, value);
+            set => this.SetProperty(ref this.piSuujiUshiro_, value);
         }
 
-        /// <summary>難易度フォントサイズ を取得、設定</summary>
-        private int difficulityFontsize_;
-        [UIValue("difficulity-fontsize")]
-        /// <summary>難易度フォントサイズ を取得、設定</summary>
-        public int DifficulityFontSize
-        {
-            get => this.difficulityFontsize_;
-
-            set => this.SetProperty(ref this.difficulityFontsize_, value);
-        }
-
-        /// <summary>コンボ数の表示 を取得、設定</summary>
-        private bool comboVisible_;
-        [UIValue("combo-visible")]
-        /// <summary>コンボ数の表示 を取得、設定</summary>
-        public bool ComboVisible
-        {
-            get => this.comboVisible_;
-
-            set => this.SetProperty(ref this.comboVisible_, value);
-        }
-
-        /// <summary>コンボ を取得、設定</summary>
-        private string combo_;
-        [UIValue("combo")]
-        /// <summary>コンボ を取得、設定</summary>
-        public string Combo
-        {
-            get => this.combo_ ?? "";
-
-            set => this.SetProperty(ref this.combo_, value);
-        }
-
-        /// <summary>コンボ数フォントサイズ を取得、設定</summary>
-        private int comboFontSize_;
-        [UIValue("combo-fontsize")]
-        /// <summary>コンボ数フォントサイズ を取得、設定</summary>
-        public int ComboFontSize
-        {
-            get => this.comboFontSize_;
-
-            set => this.SetProperty(ref this.comboFontSize_, value);
-        }
-
-        /// <summary>スコア表示 を取得、設定</summary>
-        private bool scoreVisible_;
-        [UIValue("score-visible")]
-        /// <summary>スコア表示 を取得、設定</summary>
-        public bool ScoreVisible
-        {
-            get => this.scoreVisible_;
-
-            set => this.SetProperty(ref this.scoreVisible_, value);
-        }
-
-        /// <summary>スコア を取得、設定</summary>
-        private string score_;
-        [UIValue("score")]
-        /// <summary>スコア を取得、設定</summary>
-        public string Score
-        {
-            get => this.score_ ?? "0";
-
-            set => this.SetProperty(ref this.score_, value);
-        }
-
-        /// <summary>スコアフォントサイズ を取得、設定</summary>
-        private int scoreFontsize_;
-        [UIValue("score-fontsize")]
-        /// <summary>スコアフォントサイズ を取得、設定</summary>
-        public int ScoreFontsize
-        {
-            get => this.scoreFontsize_;
-
-            set => this.SetProperty(ref this.scoreFontsize_, value);
-        }
-
-        /// <summary>ランク表示 を取得、設定</summary>
-        private bool rankVisible_;
-        [UIValue("rank-visible")]
-        /// <summary>ランク表示 を取得、設定</summary>
-        public bool RankVisible
-        {
-            get => this.rankVisible_;
-
-            set => this.SetProperty(ref this.rankVisible_, value);
-        }
-
-        /// <summary>ランク を取得、設定</summary>
-        private string rank_;
-        [UIValue("rank")]
-        /// <summary>ランク を取得、設定</summary>
-        public string Rank
-        {
-            get => this.rank_ ?? "SS";
-
-            set => this.SetProperty(ref this.rank_, value);
-        }
-
-        /// <summary>ランクフォントサイズ を取得、設定</summary>
-        private int rankFontsize_;
-        [UIValue("rank-fontsize")]
-        /// <summary>ランクフォントサイズ を取得、設定</summary>
-        public int RankFontsize
-        {
-            get => this.rankFontsize_;
-
-            set => this.SetProperty(ref this.rankFontsize_, value);
-        }
-
-        /// <summary>精度の表示 を取得、設定</summary>
-        private bool seidoVisible_;
-        [UIValue("seido-visible")]
-        /// <summary>精度の表示 を取得、設定</summary>
-        public bool SeidoVisible
-        {
-            get => this.seidoVisible_;
-
-            set => this.SetProperty(ref this.seidoVisible_, value);
-        }
-
-        /// <summary>精度 を取得、設定</summary>
-        private string seido_;
-        [UIValue("seido")]
-        /// <summary>精度 を取得、設定</summary>
-        public string Seido
-        {
-            get => this.seido_ ?? "";
-
-            set => this.SetProperty(ref this.seido_, value);
-        }
-
-        /// <summary>精度フォントサイズ を取得、設定</summary>
-        private int seidoFontsize_;
-        [UIValue("seido-fontsize")]
-        /// <summary>精度フォントサイズ を取得、設定</summary>
-        public int SeidoFontsize
-        {
-            get => this.seidoFontsize_;
-
-            set => this.SetProperty(ref this.seidoFontsize_, value);
-        }
-
-        /// <summary>サブテキストのスペーシング を取得、設定</summary>
-        private float subTextSpacing_;
-        [UIValue("sub-text-spacing")]
-        /// <summary>サブテキストのスペーシング を取得、設定</summary>
-        public float SubTextSpacing
-        {
-            get => this.subTextSpacing_;
-
-            set => this.SetProperty(ref this.subTextSpacing_, value);
-        }
-
-        /// <summary>スコアテキストのスペーシング を取得、設定</summary>
-        private float scoreTextSpacing_;
-        [UIValue("score-text-spacing")]
-        /// <summary>スコアテキストのスペーシング を取得、設定</summary>
-        public float ScoreTextSpacing
-        {
-            get => this.scoreTextSpacing_;
-
-            set => this.SetProperty(ref this.scoreTextSpacing_, value);
-        }
-
-        /// <summary>ランクテキストのスペーシング を取得、設定</summary>
-        private float rankTextSpacing_;
-        [UIValue("rank-text-spacing")]
-        /// <summary>ランクテキストのスペーシング を取得、設定</summary>
-        public float RankTextSpacing
-        {
-            get => this.rankTextSpacing_;
-
-            set => this.SetProperty(ref this.rankTextSpacing_, value);
-        }
         #endregion
         //ﾟ+｡*ﾟ+｡｡+ﾟ*｡+ﾟ ﾟ+｡*ﾟ+｡｡+ﾟ*｡+ﾟ ﾟ+｡*ﾟ+｡*ﾟ+｡｡+ﾟ*｡+ﾟ ﾟ+｡*ﾟ+｡｡+ﾟ*｡+ﾟ ﾟ+｡*ﾟ+｡*ﾟ+｡｡+ﾟ*｡+ﾟ ﾟ+｡*ﾟ+｡｡+ﾟ*｡+ﾟ ﾟ+｡*
         #region // Unity Message
@@ -384,17 +198,20 @@ namespace SongOfPiInformation.Views
         protected override void OnDestroy()
         {
             Logger.Debug("OnDestroy call");
-            this._scoreController.scoreDidChangeEvent -= this.OnScoreDidChangeEvent;
-            this._scoreController.comboDidChangeEvent -= this.OnComboDidChangeEvent;
-            this._relativeScoreAndImmediateRankCounter.relativeScoreOrImmediateRankDidChangeEvent -= this.OnRelativeScoreOrImmediateRankDidChangeEvent;
-            this._pauseController.didPauseEvent -= this.OnDidPauseEvent;
-            this._pauseController.didResumeEvent -= this.OnDidResumeEvent;
-            PluginConfig.Instance.OnReloaded -= this.OnReloaded;
-            PluginConfig.Instance.OnChenged -= this.OnChenged;
-            if (this._informationScreen != null) {
-                this._informationScreen.HandleGrabbed -= this.OnHandleGrabbed;
-                this._informationScreen.HandleReleased -= this.OnHandleReleased;
-                Destroy(this._informationScreen);
+            if (this.piFlag) {
+                this._pauseController.didPauseEvent -= this.OnDidPauseEvent;
+                this._pauseController.didResumeEvent -= this.OnDidResumeEvent;
+                PluginConfig.Instance.OnReloaded -= this.OnReloaded;
+                PluginConfig.Instance.OnChenged -= this.OnChenged;
+                if (this._informationScreen != null) {
+                    this._informationScreen.HandleGrabbed -= this.OnHandleGrabbed;
+                    this._informationScreen.HandleReleased -= this.OnHandleReleased;
+                    Destroy(this._informationScreen);
+                }
+                this._scoreController.noteWasCutEvent -= this.OnNoteWasCut;
+                this._scoreController.noteWasMissedEvent -= this.OnNoteWasMissed;
+                // Clear note id mappings.
+                noteToIdMapping?.Clear();
             }
             base.OnDestroy();
         }
@@ -408,61 +225,63 @@ namespace SongOfPiInformation.Views
         //ﾟ+｡*ﾟ+｡｡+ﾟ*｡+ﾟ ﾟ+｡*ﾟ+｡｡+ﾟ*｡+ﾟ ﾟ+｡*ﾟ+｡*ﾟ+｡｡+ﾟ*｡+ﾟ ﾟ+｡*ﾟ+｡｡+ﾟ*｡+ﾟ ﾟ+｡*ﾟ+｡*ﾟ+｡｡+ﾟ*｡+ﾟ ﾟ+｡*ﾟ+｡｡+ﾟ*｡+ﾟ ﾟ+｡*
         #region // プライベートメソッド
         /// <summary>
-        /// スコアが更新されたときに呼び出されます。
+        /// ノーツがカットされたときに呼び出されます。
         /// </summary>
-        /// <param name="arg1"></param>
-        /// <param name="arg2"></param>
-        private void OnScoreDidChangeEvent(int arg1, int arg2)
+        /// <param name="noteData"></param>
+        /// <param name="noteCutInfo"></param>
+        /// <param name="multiplier"></param>
+        public void OnNoteWasCut(NoteData noteData, NoteCutInfo noteCutInfo, int multiplier)
         {
-            this.Score = $"{arg2:#,0}";
+            PiUpdate(this.SearchNoteID(noteData));
         }
+
         /// <summary>
-        /// コンボ数が変化したときに呼び出されます。
+        /// ノーツを見逃したときに呼び出されます
         /// </summary>
-        /// <param name="obj"></param>
-        private void OnComboDidChangeEvent(int obj)
+        /// <param name="noteData"></param>
+        /// <param name="multiplier"></param>
+        public void OnNoteWasMissed(NoteData noteData, int multiplier)
         {
-            this.UpdateComboText(obj);
+            PiUpdate(this.SearchNoteID(noteData));
         }
+
         /// <summary>
-        /// 精度が変わったときに呼び出されます。
+        /// noteDataからnoteIDを探します
         /// </summary>
-        private void OnRelativeScoreOrImmediateRankDidChangeEvent()
-        {
-            this.UpdateSeidoText();
-            this.UpdateRankText();
-        }
-        /// <summary>
-        /// ランク表示を更新します。
-        /// </summary>
-        private void UpdateRankText()
-        {
-            this.Rank = RankModel.GetRankName(this._relativeScoreAndImmediateRankCounter.immediateRank);
-        }
-        /// <summary>
-        /// 精度を更新します。
-        /// </summary>
-        private void UpdateSeidoText()
-        {
-            this.Seido = $"{this._relativeScoreAndImmediateRankCounter.relativeScore * 100:0.00} %";
-        }
-        /// <summary>
-        /// コンボ数を更新します。
-        /// </summary>
-        /// <param name="combo"></param>
-        private void UpdateComboText(int combo)
-        {
-            this.Combo = $"{combo} <size=50%>COMBO</size>";
-        }
-        /// <summary>
-        /// カバー画像を更新します。
-        /// </summary>
-        /// <param name="beatmapCover"></param>
+        /// <param name="noteData"></param>
         /// <returns></returns>
-        private IEnumerator SetCover(Sprite beatmapCover)
+        private int SearchNoteID(NoteData noteData)
         {
-            yield return new WaitWhile(() => this._cover == null || !this._cover);
-            this._cover.sprite = beatmapCover;
+            if (this.noteToIdMapping.TryRemove(new NoteDataEntity(noteData, this.noArrows), out var id)) {
+                if (lastNoteId < id) {
+                    lastNoteId = id;
+                }
+                return id;
+            }
+            else {
+                return lastNoteId;
+            }
+        }
+
+        /// <summary>
+        /// π表示を更新します。
+        /// </summary>
+        /// <param name="id"></param>
+        private void PiUpdate(int id)
+        {
+            var piIndex = this.piData.noteList[id];
+            var piList = PiData.piList;
+            int piDigit = 10238;
+            int piNow = 0;
+            if (piIndex > 1) {
+                piDigit = 10238 - piIndex + 1;
+                piNow = piIndex - 1;
+            }
+            this.piIma = $"{piNow}桁";
+            this.piNokori = $"(あと{piDigit}桁)";
+            this.piSuujiMae = $"{(piIndex - 10 >= 0 ? piList.Substring(piIndex - 10, 1) : " ")}{(piIndex - 9 >= 0 ? piList.Substring(piIndex - 9, 1) : " ")}{(piIndex - 8 >= 0 ? piList.Substring(piIndex - 8, 1) : " ")}{(piIndex - 7 >= 0 ? piList.Substring(piIndex - 7, 1) : " ")}{(piIndex - 6 >= 0 ? piList.Substring(piIndex - 6, 1) : " ")}{(piIndex - 5 >= 0 ? piList.Substring(piIndex - 5, 1) : " ")}{(piIndex - 4 >= 0 ? piList.Substring(piIndex - 4, 1) : " ")}{(piIndex - 3 >= 0 ? piList.Substring(piIndex - 3, 1) : " ")}{(piIndex - 2 >= 0 ? piList.Substring(piIndex - 2, 1) : " ")}{(piIndex - 1 >= 0 ? piList.Substring(piIndex - 1, 1) : " ")}";
+            this.piSuujiIma = $"{piList.Substring(piIndex, 1)}";
+            this.piSuujiUshiro = $"{(piIndex + 1 < 10239 ? piList.Substring(piIndex + 1, 1) : " ")}{(piIndex + 2 < 10239 ? piList.Substring(piIndex + 2, 1) : " ")}{(piIndex + 3 < 10239 ? piList.Substring(piIndex + 3, 1) : " ")}{(piIndex + 4 < 10239 ? piList.Substring(piIndex + 4, 1) : " ")}{(piIndex + 5 < 10239 ? piList.Substring(piIndex + 5, 1) : " ")}{(piIndex + 6 < 10239 ? piList.Substring(piIndex + 6, 1) : " ")}{(piIndex + 7 < 10239 ? piList.Substring(piIndex + 7, 1) : " ")}{(piIndex + 8 < 10239 ? piList.Substring(piIndex + 8, 1) : " ")}{(piIndex + 9 < 10239 ? piList.Substring(piIndex + 9, 1) : " ")}{(piIndex + 10 < 10239 ? piList.Substring(piIndex + 10, 1) : " ")}";
         }
 
         private IEnumerator CanvasConfigUpdate()
@@ -517,35 +336,14 @@ namespace SongOfPiInformation.Views
 
         private void SetConfigValue(PluginConfig p)
         {
-            this.CoverVisible = p.CoverVisible;
-            this.CoverSize = p.CoverSize;
-            this.CoverPivot = p.CoverPivotPos;
-
-            this.TextSpaceHeight = p.TextSpaceHeight;
-            this.TextSpaceWidth = 200f - p.CoverSize;
-
-            this.SongNameFontSize = p.SongNameFontSize;
-            this.SongSUbNameFontSIze = p.SongSubNameFontSize;
-            this.SongAuthorFontsize = p.SongAuthorNameFontSize;
-
-            this.ScoreVisible = p.ScoreVisible;
-            this.ScoreFontsize = p.ScoreFontSize;
-
-            this.ComboFontSize = p.ComboFontSize;
-            this.ComboVisible = p.ComboVisible;
-
-            this.SeidoFontsize = p.SeidoFontSize;
-            this.SeidoVisible = p.SeidoVisible;
-
-            this.RankVisible = p.RankVisible;
-            this.RankFontsize = p.RankFontSize;
-
-            this.DifficulityLabelVisible = p.DifficulityLabelVisible;
-            this.DifficulityFontSize = p.DifficulityLabelFontSize;
-
-            this.SubTextSpacing = p.SubTextSpacing;
-            this.ScoreTextSpacing = p.ScoreTextSpacing;
-            this.RankTextSpacing = p.RankTextSpacing;
+            this.suujiTextSpaceHeight = p.SuujiTextSpaceHeight;
+            this.suujiTextSpaceWidth  = p.SuujiTextSpaceWidth;
+            this.ketaTextSpaceHeight  = p.KetaTextSpaceHeight;
+            this.ketaTextSpaceWidth   = p.KetaTextSpaceWidth;
+            this.piImaFontSize        = p.PiImaFontSize;
+            this.piNokoriFontSize     = p.PiNokoriFontSize;
+            this.piSuujiZengoFontSize = p.PiSuujiZengoFontSize;
+            this.piSuujiImaFontSize   = p.PiSuujiImaFontSize;
 
             if (this._informationScreen == null || !this._informationScreen) {
                 return;
@@ -615,22 +413,24 @@ namespace SongOfPiInformation.Views
         private ScoreController _scoreController;
         private GameplayCoreSceneSetupData _gameplayCoreSceneSetupData;
         private FloatingScreen _informationScreen;
-        private RelativeScoreAndImmediateRankCounter _relativeScoreAndImmediateRankCounter;
         private PauseController _pauseController;
         [UIComponent("cover")]
         private ImageView _cover;
         private VRPointer _pointer;
-        private Sprite _coverSprite;
         private static readonly object _lockObject = new object();
+        private ConcurrentDictionary<NoteDataEntity, int> noteToIdMapping { get; } = new ConcurrentDictionary<NoteDataEntity, int>();
+        private int lastNoteId = 0;
+        private bool noArrows = false;
+        private PiData piData;
+        private bool piFlag = false;
         #endregion
         //ﾟ+｡*ﾟ+｡｡+ﾟ*｡+ﾟ ﾟ+｡*ﾟ+｡｡+ﾟ*｡+ﾟ ﾟ+｡*ﾟ+｡*ﾟ+｡｡+ﾟ*｡+ﾟ ﾟ+｡*ﾟ+｡｡+ﾟ*｡+ﾟ ﾟ+｡*ﾟ+｡*ﾟ+｡｡+ﾟ*｡+ﾟ ﾟ+｡*ﾟ+｡｡+ﾟ*｡+ﾟ ﾟ+｡*
         #region // 構築・破棄
         [Inject]
-        private async void Constractor(ScoreController scoreController, GameplayCoreSceneSetupData gameplayCoreSceneSetupData, RelativeScoreAndImmediateRankCounter relativeScoreAndImmediateRankCounter, PauseController pauseController, VRInputModule inputModule)
+        private void Constractor(ScoreController scoreController, GameplayCoreSceneSetupData gameplayCoreSceneSetupData, PauseController pauseController, VRInputModule inputModule)
         {
             Logger.Debug("Constractor call");
             this._scoreController = scoreController;
-            this._relativeScoreAndImmediateRankCounter = relativeScoreAndImmediateRankCounter;
             this._gameplayCoreSceneSetupData = gameplayCoreSceneSetupData;
             this._pauseController = pauseController;
             this._pointer = inputModule.GetField<VRPointer, VRInputModule>("_vrPointer");
@@ -643,12 +443,17 @@ namespace SongOfPiInformation.Views
                 Logger.Debug("previewmap is null!");
                 return;
             }
-            this._scoreController.scoreDidChangeEvent += this.OnScoreDidChangeEvent;
-            this._scoreController.comboDidChangeEvent += this.OnComboDidChangeEvent;
-            this._relativeScoreAndImmediateRankCounter.relativeScoreOrImmediateRankDidChangeEvent += this.OnRelativeScoreOrImmediateRankDidChangeEvent;
+            if (previewBeatmapLevel.songName == "Song of Pi (10238 Digits Ver.)") {
+                this.piFlag = true;
+            }
+            else {
+                Logger.Debug("Not song of Pi");
+                this.piFlag = false;
+                return;
+            }
+
             this._pauseController.didPauseEvent += this.OnDidPauseEvent;
             this._pauseController.didResumeEvent += this.OnDidResumeEvent;
-            this._coverSprite = await previewBeatmapLevel.GetCoverImageAsync(CancellationToken.None);
             
             this.SetConfigValue(PluginConfig.Instance);
             this._informationScreen = FloatingScreen.CreateFloatingScreen(new Vector2(200f, 120f), true, new Vector3(PluginConfig.Instance.ScreenPosX, PluginConfig.Instance.ScreenPosY, PluginConfig.Instance.ScreenPosZ), Quaternion.Euler(0f, 0f, 0f));
@@ -660,14 +465,19 @@ namespace SongOfPiInformation.Views
             this._informationScreen.HandleGrabbed += this.OnHandleGrabbed;
             this._informationScreen.HandleReleased += this.OnHandleReleased;
             HMMainThreadDispatcher.instance.Enqueue(this.CanvasConfigUpdate());
-            HMMainThreadDispatcher.instance.Enqueue(this.SetCover(this._coverSprite));
-            this.SongName = previewBeatmapLevel.songName;
-            this.SongSubName = previewBeatmapLevel.songSubName;
-            this.SongAuthor = previewBeatmapLevel.songAuthorName;
-            this.Difficulity = diff.difficulty.ToString();
-            this.UpdateComboText(0);
             PluginConfig.Instance.OnReloaded += this.OnReloaded;
             PluginConfig.Instance.OnChenged += this.OnChenged;
+
+            this._scoreController.noteWasCutEvent += this.OnNoteWasCut;
+            this._scoreController.noteWasMissedEvent += this.OnNoteWasMissed;
+            this.noArrows = this._gameplayCoreSceneSetupData.gameplayModifiers.noArrows;
+            this.noteToIdMapping.Clear();
+            this.lastNoteId = 0;
+            foreach (var note in diff.beatmapData.beatmapObjectsData.Where(x => x is NoteData).Select((x, i) => new { note = x, index = i })) {
+                this.noteToIdMapping.TryAdd(new NoteDataEntity(note.note as NoteData, this.noArrows), note.index);
+            }
+            this.piData = new PiData();
+            PiUpdate(0);
         }
         #endregion
     }

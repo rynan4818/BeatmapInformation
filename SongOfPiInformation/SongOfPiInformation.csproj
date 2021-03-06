@@ -145,6 +145,8 @@
     <Compile Include="Installer\SPInfoGameInstaller.cs" />
     <Compile Include="Installer\SPInfoMenuInstaller.cs" />
     <Compile Include="Logger.cs" />
+    <Compile Include="Models\PiData.cs" />
+    <Compile Include="Models\NoteDataEntity.cs" />
     <Compile Include="Plugin.cs" />
     <Compile Include="Configuration\PluginConfig.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

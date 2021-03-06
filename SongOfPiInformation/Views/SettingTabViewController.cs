@@ -44,8 +44,8 @@ namespace SongOfPiInformation.Views
         private void ResetPositionAndRotation()
         {
             PluginConfig.Instance.ScreenPosX = 0f;
-            PluginConfig.Instance.ScreenPosY = 0.7f;
-            PluginConfig.Instance.ScreenPosZ = -1.1f;
+            PluginConfig.Instance.ScreenPosY = 2.5f;
+            PluginConfig.Instance.ScreenPosZ = 8f;
 
             PluginConfig.Instance.ScreenRotX = 0f;
             PluginConfig.Instance.ScreenRotY = 0f;
