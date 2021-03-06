@@ -5,15 +5,15 @@ using System.Text;
 using System.Threading.Tasks;
 using Zenject;
 using SiraUtil;
-using BeatmapInformation.Views;
+using SongOfPiInformation.Views;
 
-namespace BeatmapInformation.Installer
+namespace SongOfPiInformation.Installer
 {
-    public class BMInfoGameInstaller : MonoInstaller
+    public class SPInfoGameInstaller : MonoInstaller
     {
         public override void InstallBindings()
         {
-            this.Container.BindInterfacesAndSelfTo<BeatmapInformationViewController>().FromNewComponentAsViewController().AsSingle().NonLazy();
+            this.Container.BindInterfacesAndSelfTo<SongOfPiInformationViewController>().FromNewComponentAsViewController().AsSingle().NonLazy();
         }
     }
 }
