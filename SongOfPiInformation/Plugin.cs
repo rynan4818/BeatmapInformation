@@ -1,4 +1,4 @@
-﻿using BeatmapInformation.Installer;
+﻿using SongOfPiInformation.Installer;
 using IPA;
 using IPA.Config;
 using IPA.Config.Stores;
@@ -11,7 +11,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using IPALogger = IPA.Logging.Logger;
 
-namespace BeatmapInformation
+namespace SongOfPiInformation
 {
     [Plugin(RuntimeOptions.DynamicInit)]
     public class Plugin
@@ -29,11 +29,11 @@ namespace BeatmapInformation
         {
             Instance = this;
             Log = logger;
-            Log.Info("BeatmapInformation initialized.");
+            Log.Info("SongOfPiInformation initialized.");
             Configuration.PluginConfig.Instance = conf.Generated<Configuration.PluginConfig>();
             Log.Debug("Config loaded");
-            zenjector.OnGame<BMInfoGameInstaller>().OnlyForStandard();
-            zenjector.OnMenu<BMInfoMenuInstaller>();
+            zenjector.OnGame<SPInfoGameInstaller>().OnlyForStandard();
+            zenjector.OnMenu<SPInfoMenuInstaller>();
         }
 
         [OnStart]

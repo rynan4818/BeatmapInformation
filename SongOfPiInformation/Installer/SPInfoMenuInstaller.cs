@@ -1,4 +1,4 @@
-﻿using BeatmapInformation.Views;
+﻿using SongOfPiInformation.Views;
 using SiraUtil;
 using System;
 using System.Collections.Generic;
@@ -7,9 +7,9 @@ using System.Text;
 using System.Threading.Tasks;
 using Zenject;
 
-namespace BeatmapInformation.Installer
+namespace SongOfPiInformation.Installer
 {
-    public class BMInfoMenuInstaller : MonoInstaller
+    public class SPInfoMenuInstaller : MonoInstaller
     {
         public override void InstallBindings()
         {

@@ -1,9 +1,9 @@
 ﻿{
   "$schema": "https://raw.githubusercontent.com/bsmg/BSIPA-MetadataFileSchema/master/Schema.json",
-  "id": "BeatmapInformation",
-  "name": "BeatmapInformation",
-  "author": "denpadokei",
-  "version": "0.3.0",
+  "id": "SongOfPiInformation",
+  "name": "SongOfPiInformation",
+  "author": "rynan",
+  "version": "0.1.0",
   "description": "",
   "gameVersion": "1.13.2",
   "dependsOn": {

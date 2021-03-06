@@ -1,4 +1,4 @@
-﻿using BeatmapInformation.Configuration;
+﻿using SongOfPiInformation.Configuration;
 using BeatSaberMarkupLanguage;
 using BeatSaberMarkupLanguage.Attributes;
 using BeatSaberMarkupLanguage.Components;
@@ -18,10 +18,10 @@ using UnityEngine.UI;
 using VRUIControls;
 using Zenject;
 
-namespace BeatmapInformation.Views
+namespace SongOfPiInformation.Views
 {
     [HotReload]
-    public class BeatmapInformationViewController : BSMLAutomaticViewController
+    public class SongOfPiInformationViewController : BSMLAutomaticViewController
     {
         //ﾟ+｡*ﾟ+｡｡+ﾟ*｡+ﾟ ﾟ+｡*ﾟ+｡｡+ﾟ*｡+ﾟ ﾟ+｡*ﾟ+｡*ﾟ+｡｡+ﾟ*｡+ﾟ ﾟ+｡*ﾟ+｡｡+ﾟ*｡+ﾟ ﾟ+｡*ﾟ+｡*ﾟ+｡｡+ﾟ*｡+ﾟ ﾟ+｡*ﾟ+｡｡+ﾟ*｡+ﾟ ﾟ+｡*
         #region // プロパティ
@@ -370,7 +370,6 @@ namespace BeatmapInformation.Views
                 var mover = this._pointer.gameObject.AddComponent<FloatingScreenMoverPointer>();
                 Destroy(this._informationScreen.screenMover);
                 this._informationScreen.screenMover = mover;
-                
             }
             else {
                 var mover = this._pointer.gameObject.GetComponent<FloatingScreenMoverPointer>();

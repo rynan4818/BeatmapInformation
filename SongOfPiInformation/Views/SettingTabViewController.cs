@@ -1,4 +1,4 @@
-﻿using BeatmapInformation.Configuration;
+﻿using SongOfPiInformation.Configuration;
 using BeatSaberMarkupLanguage;
 using BeatSaberMarkupLanguage.Attributes;
 using BeatSaberMarkupLanguage.Components;
@@ -9,7 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Zenject;
 
-namespace BeatmapInformation.Views
+namespace SongOfPiInformation.Views
 {
     [HotReload]
     internal class SettingTabViewController : BSMLAutomaticViewController, IInitializable
@@ -31,13 +31,13 @@ namespace BeatmapInformation.Views
 
         protected override void OnDestroy()
         {
-            GameplaySetup.instance.RemoveTab("Beatmap Information");
+            GameplaySetup.instance.RemoveTab("Song of PI Information");
             base.OnDestroy();
         }
 
         public void Initialize()
         {
-            GameplaySetup.instance.AddTab("Beatmap Information", this.ResourceName, this);
+            GameplaySetup.instance.AddTab("Song of PI Information", this.ResourceName, this);
         }
 
         [UIAction("reset-position")]

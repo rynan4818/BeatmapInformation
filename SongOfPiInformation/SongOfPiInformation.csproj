@@ -8,8 +8,8 @@
     <ProjectGuid>{6615334E-C4B5-4AEE-8018-D1E677EFE510}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>BeatmapInformation</RootNamespace>
-    <AssemblyName>BeatmapInformation</AssemblyName>
+    <RootNamespace>SongOfPiInformation</RootNamespace>
+    <AssemblyName>SongOfPiInformation</AssemblyName>
     <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <DebugSymbols>true</DebugSymbols>
@@ -142,14 +142,14 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Installer\BMInfoGameInstaller.cs" />
-    <Compile Include="Installer\BMInfoMenuInstaller.cs" />
+    <Compile Include="Installer\SPInfoGameInstaller.cs" />
+    <Compile Include="Installer\SPInfoMenuInstaller.cs" />
     <Compile Include="Logger.cs" />
     <Compile Include="Plugin.cs" />
     <Compile Include="Configuration\PluginConfig.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Views\BeatmapInformationViewController.cs" />
     <Compile Include="Views\SettingTabViewController.cs" />
+    <Compile Include="Views\SongOfPiInformationViewController.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="manifest.json" />
@@ -157,9 +157,9 @@
   <ItemGroup>
     <None Include="Directory.Build.props" Condition="Exists('Directory.Build.props')" />
     <None Include="Directory.Build.targets" Condition="Exists('Directory.Build.targets')" />
-    <None Include="BeatmapInformation.csproj.user" Condition="Exists('BeatmapInformation.csproj.user')" />
-    <EmbeddedResource Include="Views\BeatmapInformationViewController.bsml">
-      <DependentUpon>BeatmapInformationViewController.cs</DependentUpon>
+    <None Include="SongOfPiInformation.csproj.user" Condition="Exists('SongOfPiInformation.csproj.user')" />
+    <EmbeddedResource Include="Views\SongOfPiInformationViewController.bsml">
+      <DependentUpon>SongOfPiInformationViewController.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Views\SettingTabViewController.bsml">
       <DependentUpon>SettingTabViewController.cs</DependentUpon>
