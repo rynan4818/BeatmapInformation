@@ -21,7 +21,7 @@ BeatSaber Ver1.13.2のみ対応です。
 
 # インストール方法
 
-[SongOfPiInformationのリリース](https://github.com/rynan4818/BeatmapInformation/releases/tag/SongOfPiInformation0.1.0)から、zipファイルをダウンロードして解凍し、BeatSaberのインストールフォルダのPluginsフォルダにSongOfPiInformation.dllをコピーして下さい。
+[SongOfPiInformationのリリース](https://github.com/rynan4818/BeatmapInformation/releases)から、zipファイルをダウンロードして解凍し、BeatSaberのインストールフォルダのPluginsフォルダにSongOfPiInformation.dllをコピーして下さい。
 
 # 設定
 曲選択画面左のGAMEPLAY SETUPでMODの中に SongOfPiInformation があります。位置のロックやリセット、機能のON/OFFが可能です。
