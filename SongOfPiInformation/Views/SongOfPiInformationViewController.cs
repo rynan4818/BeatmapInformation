@@ -230,7 +230,7 @@ namespace SongOfPiInformation.Views
         /// <param name="noteData"></param>
         /// <param name="noteCutInfo"></param>
         /// <param name="multiplier"></param>
-        public void OnNoteWasCut(NoteData noteData, NoteCutInfo noteCutInfo, int multiplier)
+        public void OnNoteWasCut(NoteData noteData,in NoteCutInfo noteCutInfo, int multiplier)
         {
             PiUpdate(this.SearchNoteID(noteData));
         }
